@@ -54,7 +54,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  void initState() {
+  void initState()
+  {
     refreshUserData();
     super.initState();
   }
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: false,//Like as a singchildscrolview
       appBar: isView?AppBar(
         backgroundColor: primeColor,
         automaticallyImplyLeading: false,
@@ -230,9 +231,7 @@ class _HomePageState extends State<HomePage> {
           final size = MediaQuery.of(context).size;
           return Dialog(
             child: SingleChildScrollView(
-              physics: NeverScrollableScrollPhysics(),
               child: Container(
-                height: size.height-100,
                 padding: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
@@ -249,63 +248,74 @@ class _HomePageState extends State<HomePage> {
                     CustomTextField(controller: nameController, hintText: userName,),
                     CustomTitle(title: 'Description Update'),
                     CustomTextField(controller: descController, hintText: description,),
-                    CustomTitle(title: 'Priority : '),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CustomRadioButton(
-                            title: 'High',
-                            value: 'High',
-                            groupValue: priority,
-                            onChanged: (value){
-                              setState(() {
-                                priority = value!;
-                                print('priority == $priority');
-                              });
-                            }),
-                        CustomRadioButton(
-                            title: 'Medium',
-                            value: 'Medium',
-                            groupValue: priority,
-                            onChanged: (value){
-                              setState(() {
-                                priority = value!;
-                                print('priority == $priority');
-                              });
-                            }),
-                        CustomRadioButton(
-                            title: 'Low',
-                            value: 'Low',
-                            groupValue: priority,
-                            onChanged: (value){
-                              setState(() {
-                                priority = value!;
-                                print('priority == $priority');
-                              });
-                            }),
-                      ],
+                    CustomTitle(title: 'Task Priority*'),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 0.00000001),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                                CustomRadioButton(
+                                  title: 'High',
+                                  value: 'High',
+                                  groupValue: priority,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      priority = value!;
+                                    });
+                                  },
+                                ),
+                                CustomRadioButton(
+                                  title: 'Medium',
+                                  value: 'Medium',
+                                  groupValue: priority,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      priority = value!;
+                                    });
+                                  },
+                                ),
+                                CustomRadioButton(
+                                  title: 'Low',
+                                  value: 'Low',
+                                  groupValue: priority,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      priority = value!;
+                                    });
+                                  },
+                                ),
+                              ],
+                        ),
+                      ),
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomDateTimeField(controller: dateInputController, title: 'Date Update', hintText: oldDate, prefixIcon: Icon(Icons.calendar_today,color: primeColor,),onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                              context: context, initialDate: DateTime.now(),
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2101)
-                          );
+                        CustomDateTimeField(
+                          controller: dateInputController,
+                          title: 'Date Update',
+                          hintText: oldDate,
+                          prefixIcon: Icon(Icons.calendar_today, color: primeColor),
+                          onTap: () async {
+                            DateTime today = DateTime.now();
+                            DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: today,
+                              firstDate: today,
+                              lastDate: DateTime(2101),
+                            );
 
-                          if(pickedDate != null ){
-                            print(pickedDate);
-                            String formattedDate = DateFormat('dd-MM-yyy').format(pickedDate);
-                            print(formattedDate);
-                            setState(() {
-                              dateInputController.text = formattedDate;
-                            });
-                          }else{
-                            print("Date is not selected");
-                          }
-                        },),
+                            if (pickedDate != null) {
+                              String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                              setState(() {
+                                dateInputController.text = formattedDate;
+                              });
+                            } else {
+                              print("Date is not selected");
+                            }
+                          },
+                        ),
                         SizedBox(height: 10,),
                         CustomDateTimeField(controller: timeInputController, title: 'Time Update', hintText: oldTime, prefixIcon: Icon(Icons.watch_later_outlined,color: primeColor,), onTap: () async {
                           TimeOfDay? pickedTime =  await showTimePicker(

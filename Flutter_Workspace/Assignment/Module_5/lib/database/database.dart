@@ -18,12 +18,15 @@ class SQLiteDatabase {
     task TEXT,
     createdAt TIMESTAMP NOT NULL DEFAULT CURRElNT_TIMESTAMP 
     )""");
-  }
+  } // createdAt - For the check Current time data update
 
   // Created Database
   static Future<sql.Database>db()async
   {
-    return sql.openDatabase('createdbydhvani.db',version: 1,onCreate: (sql.Database database,int version)
+    return sql.openDatabase(
+        'createdbydhvani.db',
+        version: 1,
+        onCreate: (sql.Database database,int version)
     async
     {
       await createTable(database);
@@ -44,7 +47,7 @@ class SQLiteDatabase {
       'picTime':picTime,
       'task':task,
     };
-    final id = await db.insert('userData', data,conflictAlgorithm: sql.ConflictAlgorithm.replace);
+    final id = await db.insert("userData", data,conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return id;
 
   }

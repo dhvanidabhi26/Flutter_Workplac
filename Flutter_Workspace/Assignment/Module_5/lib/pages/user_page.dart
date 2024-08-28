@@ -157,16 +157,16 @@ class _UserDataEnterPageState extends State<UserDataEnterPage> {
                     prefixIcon: Icon(Icons.calendar_today, color: primeColor),
                     hintText: "Select Date",
                     onTap: () async {
+                      DateTime today = DateTime.now();
                       DateTime? pickedDate = await showDatePicker(
                         context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
+                        initialDate: today,
+                        firstDate: today,
                         lastDate: DateTime(2101),
                       );
 
                       if (pickedDate != null) {
-                        String formattedDate =
-                        DateFormat('dd-MM-yyyy').format(pickedDate);
+                        String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
                         setState(() {
                           dateInputController.text = formattedDate;
                         });
